@@ -1,6 +1,6 @@
 SRC = demo1
 
-all: $(SRC).html
+all: test $(SRC).html
 
 $(SRC).html: $(SRC).pmd
 	pweave --format=md2html $(SRC).pmd

@@ -1,28 +1,99 @@
-Demonstration 1
+% Demonstration 1
+% Jon Craton
+% June 20, 2018
 
-Provide a document that demonstrates your knowledge of some basic
+> Provide a document that demonstrates your knowledge of some basic
 algorithm analysis. The document can be a word document, powerpoint
 slides, a video presentation, …. The format isn’t important and it
 doesn’t need to be formal.
 
-In the document demonstrate your ability to perform the following tasks:
+# 1.
 
-1.  Take a fragment of code or pseudocode, and demonstrate you ability
-    to do “frequency counting” of the statements/operations/blocks of
-    operations in the code. (As in the example on page 181 of Algs4.)
-    The code or algorithm you choose is whatever you would like in
-    whatever language/pseudolanguage you wouldlike, so long as it is
-    sufficiently complex to effectively demonstrate frequency counting.
-    In the course of this, you might demonstrate use of a summation
-    formula and/or induction if appropriate.
+> Take a fragment of code or pseudocode, and demonstrate you ability
+to do “frequency counting” of the statements/operations/blocks of
+operations in the code. (As in the example on page 181 of Algs4.)
+The code or algorithm you choose is whatever you would like in
+whatever language/pseudolanguage you wouldlike, so long as it is
+sufficiently complex to effectively demonstrate frequency counting.
+In the course of this, you might demonstrate use of a summation
+formula and/or induction if appropriate.
 
-2.  Take a fragment of code or pseudocode, and demonstrate you ability
-    to do determine an appropriate cost model (aka performance model)
-    for the code fragment. Explain the assumptions you made as to why
-    your choice of performance model was appropriate. The code or
-    algorithm you choose is whatever you would like, so that is
-    sufficient to demonstrate frequency counting. It would probably be
-    convenient to use the same code fragment you chose for problem 1.
+We'll demonstrate frequency counting using a simple selection sort[1]. This is one of the simplest possible sorts to implement and has polynomial complexity O(n²).
+
+Here's the implementation in Python:
+
+```python
+def selection_sort(items, cmp):
+  """ Takes a list of elements and sorts it in place using the simple selection sort algorithm (https://en.wikipedia.org/wiki/Selection_sort)
+  
+  >>> selection_sort([1,2,3], lambda a,b: a<b)
+  [1, 2, 3]
+  >>> selection_sort([3,2,1], lambda a,b: a<b)
+  [1, 2, 3]
+  >>> selection_sort([3,3,4,5,2,1], lambda a,b: a<b)
+  [1, 2, 3, 3, 4, 5]
+  """
+  sorted = []
+
+  while items:
+    best = items[0]
+  
+    for item in items[1:]:
+      if cmp(item, best):
+        best = item
+
+    items.remove(best)
+    sorted.append(best)
+
+  return sorted
+```
+
+Notice that this function takes a comparison function `cmp` as an argument. This allows us to use it to sort any items that we can write comparison functions for, but it also allows us to literally count the number of comparisons as the program runs.
+
+Here's an example compare function that implements frequency counting:
+
+```python
+def less_than(a, b):
+  """ Returns true if a is less than b """
+
+  less_than.count += 1
+  return a < b
+```
+
+And a shortcut frequency counting function:
+
+```python
+def freq_count(items, alg, cmp):
+  """ Returns number of calls to `cmp` when running `alg` on `items` """
+  
+  less_than.count = 0
+  alg(items, cmp)
+  return(less_than.count)
+
+freq_count([3,3,4,5,2,1], selection_sort, less_than)
+```
+
+We can extend this to create counts for random lists of different sizes:
+
+```python
+from random import random
+
+for size in range(1, 41):
+  count = freq_count([random() for i in range(0,size)], selection_sort, less_than)
+  print("%d call%s for list size %d" % (count, 's' if count > 1 else '', size))
+```
+
+Interestingly, these results are the triangle numbers from Pascal's Triangle[2].
+
+# 2.  
+
+>Take a fragment of code or pseudocode, and demonstrate you ability
+to do determine an appropriate cost model (aka performance model)
+for the code fragment. Explain the assumptions you made as to why
+your choice of performance model was appropriate. The code or
+algorithm you choose is whatever you would like, so that is
+sufficient to demonstrate frequency counting. It would probably be
+convenient to use the same code fragment you chose for problem 1.
 
 3.  Demonstrate that some function/algorithm/code fragment is O() or \~
     some other function. This would be similar to the problems in POA
@@ -40,3 +111,9 @@ examples of the particular processes. They can be based on examples you
 have seen before, but you should be able to create the solutions
 entirely from memory, without reference to any sources while doing the
 demonstrations.
+
+References
+==========
+
+1. https://en.wikipedia.org/wiki/Selection_sort
+2. https://en.wikipedia.org/wiki/Triangular_number
