@@ -10,21 +10,22 @@ $(SRC).html: $(SRC).pmd
 $(SRC).md: $(SRC).pmd
 	pweave --format=pandoc $(SRC).pmd
 
-$(SRC).py: $(SRC).pmd
+tangled.py: $(SRC).pmd
 	ptangle $(SRC).pmd
+	mv $(SRC).py tangled.py
 
 $(SRC).pdf: $(SRC).html
 	chromium-browser --headless --print-to-pdf=$(SRC).pdf $(SRC).html
 	
-run: $(SRC).py
-	python3 $(SRC).py
+run: tangled.py
+	python3 tangled.py
 
-test: $(SRC).py
-	cat testhead.py $(SRC).py > $(SRC)-test.py
+test: tangled.py
+	cat testhead.py tangled.py > tangled-test.py
 	
-	python3 -m doctest $(SRC)-test.py
+	python3 -m doctest tangled-test.py
 
 clean:
-	rm -f $(SRC).pdf $(SRC).md $(SRC).py $(SRC)-test.py $(SRC).html
+	rm -f $(SRC).pdf $(SRC).md tangled.py tangled-test.py $(SRC).html
 	rm -rf figures
 	rm -rf __pycache__

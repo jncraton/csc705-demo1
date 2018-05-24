@@ -1,5 +1,5 @@
-readme.html
-readme.py
-readme-test.py
+*.html
+tangled.py
+tangled-test.py
 __pycache__
 figures
