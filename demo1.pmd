@@ -145,6 +145,19 @@ some other function. This would be similar to the problems in POA
 3.3 or 3.4. You can choose the functions you want to work with and
 they needn’t be the same as used in your other problems.
 
+I will show that the above selection sort algorithm has complexity O(n²). Consider the basic algorithm is as follows:
+
+1. Create an empty list of sorted items
+2. Perform a comparison operation for every item in the unsorted list to determine the fittest item.
+3. Move this item to the list of sorted items.
+4. Return to step 2 until there are no more unsorted items.
+
+For every item in the list, we must perform (n-1) comparisons where n is the remaining number of unsorted items.
+
+This means that the number of comparisons is represented by the summation of (n-i) where i goes from 1 to n.
+
+This summation can be rewritten as:
+
 # 4.
 
 > Set up and solve a recurrence relation that represents the
