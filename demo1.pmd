@@ -69,10 +69,10 @@ def freq_count(items, alg, cmp):
   """ Returns number of calls to `cmp` when running `alg` on `items` """
   
   length = len(items)
-  start = time.time()
+  start = time.process_time()
   less_than.count = 0
   alg(items, cmp)
-  return((less_than.count,time.time() - start,length))
+  return((less_than.count,time.process_time() - start,length))
 
 freq_count([3,3,4,5,2,1], selection_sort, less_than)
 ```
@@ -85,7 +85,7 @@ from random import getrandbits
 results = []
 
 for size in range(1, 81):
-  results.append(freq_count([getrandbits(16) for i in range(0,size)], selection_sort, less_than))
+  results.append(freq_count(list([getrandbits(16) for i in range(0,size)]), selection_sort, less_than))
   print("%d call%s for list size %d" % (results[-1][0], 's' if results[-1][0] > 1 else '', size))
 ```
 
@@ -138,21 +138,47 @@ In most cases, it would likely be fine to assume a uniform cost model for this a
 results = []
 
 for size in range(1, 26):
-  (_, elapsed, _) = freq_count([getrandbits(2**size) for i in range(0,17)], selection_sort, less_than)
+  (_, elapsed, _) = freq_count(list([getrandbits(2**size) for i in range(0,256)]), selection_sort, less_than)
   results.append((size, elapsed))
-  print("Sorted 16 integers of size %s in %s seconds" % (2**size, elapsed))
+  print("Sorted 256 integers of size %s in %s seconds" % (2**size, elapsed))
 ```
 
 Let's graph that output to show actual runtime vs integer size for large integers:
 
 ```python, results='hidden'
 plt.plot([r[0] for r in results], [r[1] for r in results])
-plt.xlabel('Integer size (2ⁿ)')
+plt.xlabel('Integer size (2ⁿ bits)')
 plt.ylabel('Runtime (s)')
 plt.title('Runtime impact of int size')
 ```
 
 This makes it clear that for some integer size (around 2²⁰ bits) the actual cost of doing a comparison between two integers becomes a very significant cost and increases exponentially with the size of the integer.
+
+This isn't the worst we can do, though. Comparisons between big integers are actually quite quick if the integers are very different. Consider the following example:
+
+```python3
+results = []
+
+for size in range(4, 17):
+  start = getrandbits(2**size)
+  (_, elapsed, _) = freq_count(list([start + getrandbits(8) for i in range(0,512)]), selection_sort, less_than)
+  (_, elapsed, _) = freq_count(list([start + getrandbits(8) for i in range(0,512)]), selection_sort, less_than)
+  results.append((size, elapsed))
+  print("Sorted 256 integers of size %s in %s seconds" % (2**size, elapsed))
+```
+
+Let's graph that output to show actual runtime vs integer size for large integers that are close together numerically:
+
+```python, results='hidden'
+plt.plot([r[0] for r in results], [r[1] for r in results])
+plt.xlabel('Integer size (2ⁿ bit)')
+plt.ylabel('Runtime (s)')
+plt.title('Runtime impact of int size')
+```
+
+As an aside, the spike at 256 bit integers caught my attention. I haven't investigated this in detail, but I believe that this is likely due to running this on a CPU that doesn't support AVX2. AVX2 extensions provide support for native 256 bit math. I'm guessing that Python is hoping that this is available, but when it finds that it isn't it degrades to a code path that is actually less efficient than simply using its software bignum implementation.
+
+For integers that are close together numerically, runtime cost increases as linearly with the size of the word, so we can't consider comparison to be a uniform operation in all cases.
 
 However, on modern hardware a comparison between two hardware integers is a constant time operation. For example, this is a single cycle operation with single cycle latency on x86 CPUs[3]. Therefore when dealing with hardware integers, we can treat this as a uniform cost problem.
 
