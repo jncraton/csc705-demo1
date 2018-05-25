@@ -114,6 +114,24 @@ algorithm you choose is whatever you would like, so that is
 sufficient to demonstrate frequency counting. It would probably be
 convenient to use the same code fragment you chose for problem 1.
 
+Here the operations we could resonably consider for a cost model:
+
+1. Moving items
+
+In some cases, the number of move operations or swaps could be used as the cost model. Because every item is moved into the list of sorted items exactly once, this is a simple O(n) operation. It doesn't make sense to use this as a cost model because it will be eclipsed in terms of contribution to running time by comparisons which are O(n²)
+
+2. Comparing items
+
+The number of comparisons is frequently used as the cost model for sorting. This is generally the operation that must be repeated the most, and this is true for selection sort where comparisons are O(n²).
+
+3. Loading items
+
+We could also use loading an item as our cost model. Because we are comparing a list item against a local variable, each comparison requires one load, so loads are also O(n²).
+
+The most complete cost model for this case is likely "load and compare", but it is safe to just consider the number of compares as loads are always couple with compare operations.
+
+## Uniform cost?
+
 In most cases, it would likely be fine to assume a uniform cost model for this algorithm. However, comparison is actually not always a uniform operation, so it may be prudent to use a logarithmic cost model in some cases. Consider the following operation:
 
 ```python3
