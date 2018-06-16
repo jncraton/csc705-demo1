@@ -50,7 +50,7 @@ def selection_sort(items, cmp):
 
 Notice that this function takes a comparison function `cmp` as an argument. This allows us to use it to sort any items that we can write a comparison function for, but it also allows us to literally count the number of comparisons as the program runs.
 
-Here's an example compare function that implements frequency counting:
+Here's an example `less_than` function that implements automatic frequency counting:
 
 ```python
 def less_than(a, b):
@@ -114,7 +114,7 @@ algorithm you choose is whatever you would like, so that is
 sufficient to demonstrate frequency counting. It would probably be
 convenient to use the same code fragment you chose for problem 1.
 
-Here the operations we could resonably consider for a cost model:
+Here are the operations we could resonably consider for a cost model:
 
 1. Moving items
 
@@ -128,7 +128,7 @@ The number of comparisons is frequently used as the cost model for sorting. This
 
 We could also use loading an item as our cost model. Because we are comparing a list item against a local variable, each comparison requires one load, so loads are also O(n²).
 
-The most complete cost model for this case is likely "load and compare", but it is safe to just consider the number of compares as loads are always couple with compare operations.
+The most complete cost model for this case is likely "load and compare", but it is safe to just consider the number of compares as loads are always coupled with compare operations.
 
 ## Uniform cost?
 
