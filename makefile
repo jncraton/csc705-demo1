@@ -1,4 +1,4 @@
-SRC = demo1
+SRC = index
 
 all: test $(SRC).html
 
