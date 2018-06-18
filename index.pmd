@@ -257,11 +257,11 @@ For the sake of this assignment, let's pretend I have no idea what that pattern 
 
 The pattern is clearly:
 
-    Tₙ=$\sum_{i=1}^{n}(n-i)
+$Tₙ=\sum_{i=1}^{n}(n-i)
 
 As shown previously, this reduces to:
 
-    $\frac{n(n+1)}{2}$
+$\frac{n(n+1)}{2}$
 
 
 
