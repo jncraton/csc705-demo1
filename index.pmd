@@ -167,7 +167,7 @@ for size in range(4, 17):
   print("Sorted 256 integers of size %s in %s seconds" % (2**size, elapsed))
 ```
 
-Let's graph that output to show actual runtime vs integer size for large integers that are close together numerically:
+Let's graph that output to show actual runtime vs integer size for large integers that are not close together numerically:
 
 ```python, results='hidden'
 plt.plot([r[0] for r in results], [r[1] for r in results])
@@ -175,8 +175,6 @@ plt.xlabel('Integer size (2ⁿ bit)')
 plt.ylabel('Runtime (s)')
 plt.title('Runtime impact of int size')
 ```
-
-As an aside, the spike at 256 bit integers caught my attention. I haven't investigated this in detail, but I believe that this is likely due to running this on a CPU that doesn't support AVX2. AVX2 extensions provide support for native 256 bit math. I'm guessing that Python is hoping that this is available, but when it finds that it isn't it degrades to a code path that is actually less efficient than simply using its software bignum implementation.
 
 For integers that are close together numerically, runtime cost increases as linearly with the size of the word, so we can't consider comparison to be a uniform operation in all cases.
 
