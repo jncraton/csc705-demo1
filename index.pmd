@@ -176,7 +176,7 @@ plt.ylabel('Runtime (s)')
 plt.title('Runtime impact of int size')
 ```
 
-For integers that are close together numerically, runtime cost increases as linearly with the size of the word, so we can't consider comparison to be a uniform operation in all cases.
+For integers that are close together numerically, runtime cost increases linearly with the size of the word, so we can't consider comparison to be a uniform operation in all cases.
 
 However, on modern hardware a comparison between two hardware integers is a constant time operation. For example, this is a single cycle operation with single cycle latency on x86 CPUs[3]. Therefore when dealing with hardware integers, we can treat this as a uniform cost problem.
 
@@ -218,7 +218,7 @@ Consider the case where c=1:
 
 $(-\frac{1}{2})n^2+\frac{1}{2}n \le 0$
 
-The roots of the left hand size are 0 and 1. When $n\ge1$, the n² term will overpower the linear term. This proves that the above expression is true for $n\ge1$ and that our algorithm is O(n²) by definition.
+The roots of the left hand side are 0 and 1. When $n\ge1$, the n² term will overpower the linear term. This proves that the above expression is true for $n\ge1$ and that our algorithm is O(n²) by definition.
 
 # 4.
 
@@ -230,7 +230,7 @@ for CS.
 
 Let's explore selection sort using a recurrence relation. Consider the following cases:
 
-- Our list to be sorted is empty. In this case, we have to comparisons to complete, s T₁=0.
+- Our list to be sorted is empty. In this case, we have no comparisons to complete, so T₁=0.
 - If our list has items in it, we must complete n-1 comparisons, where n is the length of our list. Therefore, Tₙ=Tₙ₋₁+n-1.
 
 Here's the recurrence for selection sort:
@@ -260,14 +260,6 @@ $Tₙ=\sum_{i=1}^{n}(n-i)$
 As shown previously, this reduces to:
 
 $\frac{n(n+1)}{2}$
-
-
-
-> Your demonstrations should be your own work and should not be trivial
-examples of the particular processes. They can be based on examples you
-have seen before, but you should be able to create the solutions
-entirely from memory, without reference to any sources while doing the
-demonstrations.
 
 References
 ==========
